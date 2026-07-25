@@ -1,0 +1,58 @@
+generated: '2026-07-25'
+method: probed
+source: >-
+  Live probes of api.ebixcash.com, api.ebix.com, ebixcash.com and ebixasp.com;
+  EbixASP product help. No OpenAPI exists in this repo to derive from
+  (derive-authentication.py has no input).
+documented: false
+note: >-
+  Ebix publishes NO public authentication documentation. This file records what
+  was observed on the wire, not a documented contract — no `Authentication`
+  pointer is wired into apis.yml, because the check it feeds asks whether
+  authentication is documented, and it is not.
+summary:
+  types: []
+  api_key_in: []
+  oauth2_flows: []
+  discovery:
+    openid_configuration: 404
+    oauth_authorization_server: 404
+schemes: []
+observed:
+- host: https://api.ebixcash.com
+  surface: EbixCash API Hub (uvicorn / FastAPI)
+  evidence: >-
+    GET /openapi.json -> HTTP 401 {"detail":"Missing Authorization header"}.
+    An Authorization header is required; the scheme (Bearer/JWT/API key/Basic)
+    is not disclosed by the challenge and no WWW-Authenticate header is
+    returned.
+  scheme: undisclosed
+- host: https://api.ebix.com
+  surface: gateway
+  evidence: >-
+    GET / and every probed path -> HTTP 404
+    { "statusCode": 404, "message": "Resource not found" }. No authentication
+    challenge is reachable because no route is publicly addressable.
+  scheme: unknown
+- host: https://ebixcash.com/api/
+  surface: edge/WAF JSON envelope
+  evidence: >-
+    GET -> 405 {"status":405,"uri":"/api/","reference":"..."}; POST -> 400
+    {"status":400,...}. A generic edge error envelope with a request reference
+    id, not a documented API surface.
+  scheme: unknown
+- host: https://www.ebixasp.com
+  surface: EbixASP agency application + support portal
+  evidence: >-
+    /support serves an HTML username/password form posting to
+    /support/index.asp ("Currently no session is active. Please login."). Agency
+    access is session-based web login, not a token-based API auth model.
+  scheme: form-login (session)
+- host: IVANS
+  surface: EbixASP Real-Time Interface
+  evidence: >-
+    "When logging onto the EbixASP Real Time Interface the PC synchronizes with
+    IVANS and updates the credentials on the PC, including the list of carriers
+    and service transactions IVANS has set up for the agency's account." Carrier
+    download credentials are provisioned through IVANS, out of band.
+  scheme: provisioned-credentials (out-of-band)

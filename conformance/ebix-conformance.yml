@@ -1,0 +1,127 @@
+generated: '2026-07-25'
+method: searched
+source: >-
+  First-party Ebix product pages and product help (ebix.com solution pages,
+  TEAM-UP, Translation Services, EbixASP brochure/help), plus live probes of
+  api.ebix.com and api.ebixcash.com. Standards are asserted only where Ebix
+  itself publishes the claim; every other row is recorded as not-conforming or
+  unknown rather than assumed.
+note: >-
+  Ebix's interoperability posture is ACORD/EDI-shaped, not web-API-shaped. The
+  conforming rows below are insurance data standards, not HTTP/API standards.
+  No web-API standard could be asserted because no public specification, error
+  contract, pagination contract or auth contract is published.
+standards:
+- id: acord-al3
+  name: ACORD AL3 (Automation Level 3 flat-file download standard)
+  conforms: true
+  evidence: >-
+    "TEAM-UP uses ACORD-standard AL3 files, ensuring universal acceptance across
+    all agency management systems that support the standard."
+  source: https://www.ebix.com/solutions/property-and-casualty-insurance/team-up
+- id: acord-al3-claims-download
+  name: ACORD AL3 Claims Download
+  conforms: true
+  evidence: >-
+    "In addition to policy downloads, TEAM-UP supports Claims Download and
+    Direct Bill Commission Download."
+  source: https://www.ebix.com/solutions/property-and-casualty-insurance/team-up
+- id: acord-xml
+  name: ACORD XML (P&C/Surety XML messaging)
+  conforms: true
+  evidence: >-
+    "Ebix has extensive experience translating carrier-specific formats into
+    ACORD AL3." — Translation Services converts carrier-proprietary formats into
+    ACORD AL3 and ACORD XML using Java, XML and XSLT, across "all ACORD lines of
+    business and transaction types".
+  source: https://www.ebix.com/solutions/property-and-casualty-insurance/translation-services
+- id: acord-forms
+  name: ACORD standard forms library
+  conforms: true
+  evidence: >-
+    "EbixASP utilizes a library of ACORD forms that is updated constantly to
+    ensure that all forms are current and compliant with ACORD's standards. In
+    fact, EbixASP utilizes bi-directional data exchange with ACORD applications."
+  source: https://www.ebix.com/pdf/asp_web.pdf
+- id: ivans-real-time
+  name: IVANS real-time interface (agency/carrier connectivity)
+  conforms: true
+  evidence: >-
+    "When logging onto the EbixASP Real Time Interface the PC synchronizes with
+    IVANS and updates the credentials on the PC, including the list of carriers
+    and service transactions IVANS has set up for the agency's account."
+  source: https://www.ebixasp.com/ebixasphelp/maintenance/Real_Time_Interface/Install_Download_Real-Time_Interface.htm
+- id: acord-certification
+  name: ACORD certification / ACORD Solution Provider certification
+  conforms: false
+  evidence: No ACORD certification claim is published on ebix.com or ebixasp.com.
+- id: ngds
+  name: ACORD NGDS (Next Generation Digital Standards)
+  conforms: false
+  evidence: NGDS is not referenced anywhere on ebix.com or ebixasp.com.
+- id: openapi
+  name: OpenAPI Specification
+  conforms: unknown
+  evidence: >-
+    A FastAPI-generated OpenAPI document demonstrably exists at
+    https://api.ebixcash.com/openapi.json but returns HTTP 401
+    {"detail":"Missing Authorization header"} to anonymous callers, so its
+    version and content cannot be asserted. No spec is published for
+    api.ebix.com or any ebix.com surface.
+- id: asyncapi
+  name: AsyncAPI
+  conforms: false
+  evidence: >-
+    No event catalog, webhook reference or AsyncAPI document exists. Event
+    delivery in this stack is the ACORD AL3 download mailbox/archive pattern,
+    not HTTP callbacks.
+- id: graphql
+  name: GraphQL
+  conforms: false
+  evidence: No /graphql surface on ebix.com, api.ebix.com or api.ebixcash.com.
+- id: grpc
+  name: gRPC / Protocol Buffers
+  conforms: false
+  evidence: No .proto definitions published.
+- id: oauth2
+  name: OAuth 2.0
+  conforms: unknown
+  evidence: >-
+    /.well-known/oauth-authorization-server returns 404 on api.ebix.com and
+    api.ebixcash.com. The only observed signal is a required Authorization
+    header (HTTP 401) whose scheme is not published.
+- id: oidc
+  name: OpenID Connect Discovery
+  conforms: false
+  evidence: /.well-known/openid-configuration returns 404 on both API hosts.
+- id: rfc9457-problem-details
+  name: RFC 9457 Problem Details for HTTP APIs
+  conforms: false
+  evidence: >-
+    Observed error envelopes are ad hoc JSON —
+    {"statusCode":404,"message":"Resource not found"} on api.ebix.com and
+    {"status":"failure","message":"Route not found!!!","data":{}} on
+    api.ebixcash.com — not application/problem+json.
+- id: rfc9116-security-txt
+  name: RFC 9116 security.txt
+  conforms: false
+  evidence: No /.well-known/security.txt on any host (see well-known/ebix-well-known.yml).
+- id: rfc8594-sunset-header
+  name: RFC 8594 Sunset header / deprecation policy
+  conforms: false
+  evidence: No versioning or deprecation policy is published.
+- id: llms-txt
+  name: llms.txt (agent-facing site summary)
+  conforms: true
+  evidence: >-
+    https://www.ebix.com/llms.txt returns a real 6,650-byte llms.txt listing the
+    solution, service, corporate and legal surfaces. Saved verbatim to
+    llms/ebix-llms.txt.
+  source: https://www.ebix.com/llms.txt
+compliance_program:
+  published: false
+  note: >-
+    No trust center, no certification page and no named certification (SOC 2,
+    ISO 27001, PCI DSS, HIPAA, FedRAMP) is published on ebix.com. trust.ebix.com
+    does not resolve; /security and /compliance are SPA soft 404s. No
+    `Compliance` pointer is therefore wired.

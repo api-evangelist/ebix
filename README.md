@@ -49,6 +49,23 @@ This is the expected shape for United States insurance infrastructure: there is 
 
 No OpenAPI, Swagger, AsyncAPI, GraphQL SDL, `.proto`, webhook catalog or official Postman workspace could be retrieved anonymously. Nothing was fabricated to fill the gap, so there is no `openapi/` directory in this repo.
 
+## Artifacts
+
+Enrichment round 2026-07-25 re-probed every host and captured what is genuinely published:
+
+| Artifact | Method | Result |
+| --- | --- | --- |
+| [`llms/ebix-llms.txt`](llms/ebix-llms.txt) | **searched** | **Real `llms.txt` found and saved verbatim** — `https://www.ebix.com/llms.txt` returns 6,650 bytes of markdown (generated with the LLMs.txt Generator Tool) indexing the solution, service, news and legal pages. It names no API, no portal and no specification. |
+| [`well-known/ebix-well-known.yml`](well-known/ebix-well-known.yml) | probed | Zero real `/.well-known/` documents on any host. `www.ebix.com` answers **200 with the homepage shell for every path**, so its `/.well-known/security.txt` and `/.well-known/openid-configuration` "200"s are soft 404s, recorded as such. No `WellKnown`/`SecurityTxt` pointer is wired. |
+| [`conformance/ebix-conformance.yml`](conformance/ebix-conformance.yml) | searched | The conforming standards are **insurance data standards, not web-API standards**: ACORD AL3, ACORD AL3 Claims Download, ACORD XML, the ACORD forms library, the IVANS real-time interface, plus `llms.txt`. OpenAPI is `unknown` (exists but 401-gated); AsyncAPI, GraphQL, gRPC, OIDC, RFC 9457, RFC 9116 and RFC 8594 are all `false`. No ACORD certification and no NGDS reference is published. |
+| [`authentication/ebix-authentication.yml`](authentication/ebix-authentication.yml) | probed | `documented: false`. Records the wire evidence only — the undisclosed `Authorization` requirement on the EbixCash API Hub, the EbixASP `/support` form login, and IVANS-provisioned carrier credentials. No `Authentication` pointer is wired, because nothing is documented. |
+| [`security/ebix-domain-security.yml`](security/ebix-domain-security.yml) | probed | `www.ebix.com` TLSv1.2, HSTS `max-age=31536000`, cert to 2026-11-25; `ebix.com` has SPF and DMARC at `p=quarantine`, **no DNSSEC and no CAA**. |
+| Packages / SDKs | searched | **None.** npm, PyPI, RubyGems, NuGet, Packagist, crates.io and Maven Central return no first-party Ebix client library (`ebixui` on npm is an unrelated Vue component library). No `packages/` or `SDKs` pointer. |
+| Vulnerability disclosure / trust center | probed | **None.** `trust.ebix.com` does not resolve; `/security` and `/compliance` are SPA soft 404s; no bug-bounty program and no named certification (SOC 2, ISO 27001, PCI DSS, HIPAA, FedRAMP) is published. No `Security`, `Compliance` or `TrustCenter` pointer. |
+| Status page | probed | **None.** `ebix.statuspage.io` resolves but reads *"Ebix Status — Page Inactive"*; `status.ebix.com` does not resolve. No `StatusPage` pointer. |
+| GitHub | searched | No first-party org. `github.com/Ebix-Inc` exists as an empty organization (0 public repos, no profile metadata tying it to ebix.com) and `github.com/ebix` is an unrelated 2011 user account. No `GitHubOrganization` pointer. |
+| MCP / skills / Arazzo / overlays / errors / scopes / data model | — | Not applicable: all of these derive from an OpenAPI, and no spec could be retrieved. Nothing was generated. |
+
 ## ACORD posture
 
 **ACORD AL3 + ACORD XML download/upload translation, delivered with the IVANS real-time interface.**
@@ -92,6 +109,15 @@ Ebix Inc. filed Chapter 11 on 17 December 2023, sold its North American life and
 - [Life Insurance Solutions](https://www.ebix.com/solutions/life-insurance)
 - [Health Insurance & Employee Benefits](https://www.ebix.com/solutions/health-insurance-and-employee-benefits)
 - [EbixASP](https://www.ebixasp.com/)
+- [EbixEvolution](https://www.ebix.com/solutions/property-and-casualty-insurance/ebixevolution)
+- [RiskEnvision](https://www.ebix.com/solutions/risk-compliance-and-management/risk-envision)
+- [EbixOne](https://www.ebix.com/solutions/ebixone)
+- [Health Content & Wellness](https://www.ebix.com/solutions/health-content-and-wellness)
+- [Lending, Asset & Wealth Management](https://www.ebix.com/solutions/lending-asset-and-wealth-management)
+- [Travel & Mobility](https://www.ebix.com/solutions/travel-and-mobility)
+- [Payments Services](https://www.ebix.com/services/payments)
+- [EbixASP Support](https://www.ebixasp.com/support)
+- [llms.txt](https://www.ebix.com/llms.txt)
 - [News & Media](https://www.ebix.com/news-and-media)
 - [Contact](https://www.ebix.com/contact)
 

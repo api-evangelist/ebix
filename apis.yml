@@ -29,7 +29,13 @@ description: >-
   homepage shell rather than a developer surface; developer.ebix.com and
   docs.ebix.com do not resolve; api.ebix.com answers with a JSON 404 and no
   documented routes; and the live EbixCash API Hub at api.ebixcash.com serves an
-  OpenAPI document that returns HTTP 401 "Missing Authorization header". Ebix's
+  OpenAPI document that returns HTTP 401 "Missing Authorization header". The one
+  agent-facing discovery document Ebix does publish is a real llms.txt at
+  www.ebix.com/llms.txt, which indexes the solution, service and corporate pages
+  but names no API, portal or specification; every /.well-known/ probe across
+  www.ebix.com, api.ebix.com, api.ebixcash.com and ebixasp.com missed, no
+  first-party SDK exists in any public package registry, and no trust center,
+  security.txt or vulnerability-disclosure program was found. Ebix's
   integration surface is therefore customer- and partner-gated, sold and
   documented under contract, which is the norm for United States insurance
   infrastructure where no federal regulator and no open-insurance mandate exists.
@@ -55,6 +61,12 @@ modified: '2026-07-25'
 specificationVersion: '0.19'
 apis: []
 common:
+- type: DomainSecurity
+  url: security/ebix-domain-security.yml
+- type: Conformance
+  url: conformance/ebix-conformance.yml
+- type: LLMsTxt
+  url: llms/ebix-llms.txt
 - type: Website
   url: https://www.ebix.com/
 - type: About
@@ -66,21 +78,53 @@ common:
 - type: Documentation
   url: https://www.ebix.com/solutions/property-and-casualty-insurance/team-up
 - type: Documentation
+  url: https://www.ebix.com/solutions/property-and-casualty-insurance/ebixevolution
+- type: Documentation
   url: https://www.ebix.com/solutions/life-insurance
 - type: Documentation
   url: https://www.ebix.com/solutions/health-insurance-and-employee-benefits
 - type: Documentation
+  url: https://www.ebix.com/solutions/health-content-and-wellness
+- type: Documentation
+  url: https://www.ebix.com/solutions/risk-compliance-and-management/risk-envision
+- type: Documentation
+  url: https://www.ebix.com/solutions/ebixone
+- type: Documentation
+  url: https://www.ebix.com/solutions/lending-asset-and-wealth-management
+- type: Documentation
+  url: https://www.ebix.com/solutions/travel-and-mobility
+- type: Documentation
+  url: https://www.ebix.com/services/payments
+- type: Documentation
+  url: https://www.ebix.com/services/travels
+- type: Documentation
+  url: https://www.ebix.com/services/ed-tech-and-insurance
+- type: Documentation
   url: https://www.ebixasp.com/
+- type: ProductHelp
+  url: https://www.ebixasp.com/ebixasphelp/maintenance/Real_Time_Interface/Install_Download_Real-Time_Interface.htm
+- type: Support
+  url: https://www.ebixasp.com/support
 - type: Blog
   url: https://www.ebix.com/news-and-media
+- type: PressRelease
+  url: https://www.prnewswire.com/news-releases/ebix-launches-plug-and-play-connector-platform-for-insurtech-and-fintech-extending-its-integration-capabilities-directly-into-client-environments-302576698.html
 - type: Contact
   url: https://www.ebix.com/contact
-- type: Privacy
+- type: PrivacyPolicy
   url: https://www.ebix.com/privacy
 - type: TermsOfService
   url: https://www.ebix.com/terms-of-use
 - type: Investors
   url: https://www.ebix.com/investors
+- type: AnnualReport
+  url: https://www.ebix.com/pdf/Annual-Report-2024-25.pdf
+- type: Brand
+  url: https://www.ebix.com/download-brand-toolkit
+- type: Sitemap
+  url: https://www.ebix.com/sitemap.xml
+- type: Robots
+  url: https://www.ebix.com/robots.txt
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
