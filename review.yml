@@ -1,0 +1,373 @@
+aid: ebix
+name: Ebix
+review:
+  question: Does Ebix publish a public, self-serve developer portal or any downloadable
+    machine-readable API specification for its insurance platforms?
+  answer: false
+  date: '2026-07-25'
+  reviewer: API Evangelist
+  homeMarket: United States
+  tier: market-infrastructure
+  gated: true
+findings:
+  summary: |
+    Ebix is a United States insurance software and exchange company (Johns Creek,
+    Georgia) sitting between carriers and distribution — agency management
+    (EbixASP), P&C policy administration and placing (EbixEvolution, PlacingHub,
+    Sunrise Exchange, iClose), life/annuity distribution connectivity
+    (EbixExchange), health insurance and employee benefits administration, risk
+    and compliance (RiskEnvision, WCExchange), plus travel/payments/forex through
+    EbixCash. It is a classic instance of the US insurance seam: no federal
+    regulator, no open-insurance mandate, and value accruing to the plumbing
+    between carriers and agencies. That plumbing is ACORD/EDI-shaped, not
+    API-shaped.
+
+    No public self-serve developer portal was found. www.ebix.com is a
+    single-page application that answers HTTP 200 for ANY path: /developers,
+    /api, /developer, /partners and /integrations each returned an identical
+    233,898-byte homepage shell titled "Insurance Software Solution | Insurance
+    Software Development - Ebix" — soft 404s, not developer surfaces.
+    developer.ebix.com and docs.ebix.com do not resolve in DNS;
+    developers.ebix.com timed out. api.ebix.com resolves and answers HTTP 404
+    with { "statusCode": 404, "message": "Resource not found" } — a live gateway
+    with no publicly documented routes.
+
+    The one real API host found is the sister EbixCash arm:
+    https://api.ebixcash.com/ returns HTTP 200 {"message":"Welcome to Ebixcash
+    API Hub!!!"} served by uvicorn (FastAPI). Its auto-generated OpenAPI document
+    exists but is gated — GET https://api.ebixcash.com/openapi.json returns HTTP
+    401 {"detail":"Missing Authorization header"}. Every other documentation
+    route (/docs, /redoc, /swagger.json, /openapi.yaml, /api-docs, /spec) returns
+    {"status":"failure","message":"Route not found!!!"}. A specification
+    therefore demonstrably exists and is deliberately withheld from anonymous
+    callers. ZERO specs were harvested; none were fabricated.
+
+    Ebix does market APIs. A 7 October 2025 press release announced a
+    plug-and-play connector platform built on 1SilverBullet technology exposing
+    quoting, eApp, enrollment, underwriting checks, payments and policy servicing
+    as modular APIs via "a standardized connector fabric with pre-built mappings
+    and a developer portal" — but names no portal URL, no sandbox, and no
+    self-serve signup. The P&C solutions page states "EbixASP supports agency
+    management and API-driven quote-bind workflows" and that "data generated at
+    every step remains accessible through APIs for downstream servicing and
+    reporting". EbixASP's own site says API access is bundled in the standard
+    subscription and directs readers to "Contact the sales team". Access is
+    contract-gated in every case.
+  developerPortal:
+    url: ''
+    confirmed: false
+    classification: none-found
+    note: |
+      No first-party developer portal exists at any probed address. The
+      October 2025 connector-platform release references "a developer portal"
+      for clients but publishes no URL; it is a client-gated surface, not a
+      public one.
+    probes:
+    - url: https://ebix.com
+      status: 200
+      note: redirects to https://www.ebix.com/ — marketing SPA.
+    - url: https://www.ebix.com/developers
+      status: 200
+      note: SOFT 404 — serves the identical homepage SPA shell (233,898 bytes).
+    - url: https://www.ebix.com/developer
+      status: 200
+      note: SOFT 404 — identical homepage SPA shell.
+    - url: https://www.ebix.com/api
+      status: 200
+      note: SOFT 404 — identical homepage SPA shell.
+    - url: https://www.ebix.com/partners
+      status: 200
+      note: SOFT 404 — identical homepage SPA shell.
+    - url: https://www.ebix.com/integrations
+      status: 200
+      note: SOFT 404 — identical homepage SPA shell.
+    - url: https://developer.ebix.com
+      status: 0
+      note: DNS does not resolve.
+    - url: https://docs.ebix.com
+      status: 0
+      note: DNS does not resolve.
+    - url: https://developers.ebix.com
+      status: 0
+      note: Connection timed out after 20s.
+    - url: https://api.ebix.com/
+      status: 404
+      note: 'Live host. Body: { "statusCode": 404, "message": "Resource not found" }.
+        No documented public routes.'
+    - url: https://api.ebixcash.com/
+      status: 200
+      note: 'EbixCash API Hub. Body: {"message":"Welcome to Ebixcash API Hub!!!"};
+        server header: uvicorn.'
+    - url: https://api.ebixcash.com/openapi.json
+      status: 401
+      note: 'GATED SPEC. Body: {"detail":"Missing Authorization header"}. FastAPI-generated
+        OpenAPI exists but is not anonymously retrievable.'
+    - url: https://api.ebixcash.com/docs
+      status: 404
+      note: '{"status":"failure","message":"Route not found!!!"} — Swagger UI disabled/removed.'
+    - url: https://www.ebixasp.com/
+      status: 200
+      note: EbixASP product marketing site. States API access is included in the standard
+        subscription; directs to sales. No public API reference.
+    - url: https://www.ebixasp.com/api
+      status: 404
+      note: IIS 7.5 detailed 404.
+  openapi:
+    harvested: false
+    specsSaved: 0
+    directoryCreated: false
+    note: |
+      No OpenAPI, Swagger, AsyncAPI, GraphQL SDL or .proto artifact could be
+      retrieved anonymously. The only specification proven to exist
+      (api.ebixcash.com/openapi.json) is protected by an Authorization-header
+      requirement and returned HTTP 401. Nothing was invented to fill the gap.
+    probesRun:
+    - /openapi.json
+    - /openapi.yaml
+    - /swagger.json
+    - /swagger/v1/swagger.json
+    - /v1/openapi.json
+    - /api-docs
+    - /spec
+    - /redoc
+    - /swagger
+    - /swagger-ui.html
+    - /docs
+    hostsProbed:
+    - api.ebix.com
+    - api.ebixcash.com
+  acordPosture:
+    summary: ACORD AL3 + ACORD XML download/upload translation, delivered with IVANS
+      real-time interface
+    depth: deep-and-evidenced
+    evidence:
+    - source: https://www.ebix.com/solutions/property-and-casualty-insurance/team-up
+      quote: TEAM-UP uses ACORD-standard AL3 files, ensuring universal acceptance across
+        all agency management systems that support the standard.
+    - source: https://www.ebix.com/solutions/property-and-casualty-insurance/team-up
+      quote: In addition to policy downloads, TEAM-UP supports Claims Download and
+        Direct Bill Commission Download.
+    - source: https://www.ebix.com/solutions/property-and-casualty-insurance/translation-services
+      quote: Ebix has extensive experience translating carrier-specific formats into
+        ACORD AL3.
+    - source: https://www.ebix.com/solutions/property-and-casualty-insurance/translation-services
+      quote: Ebix maintains pre-built ACORD templates for each line of business, along
+        with established data definitions, schemas, and mappings for nearly all supported
+        download LOBs.
+    - source: https://www.ebix.com/solutions/property-and-casualty-insurance/translation-services
+      quote: 'The framework uses modern, non-proprietary technologies, including Java,
+        XML, and XSLT; it supports all ACORD lines of business and transaction types.'
+    - source: https://www.ebix.com/solutions/property-and-casualty-insurance
+      quote: TEAM-UP Translation Services translate carrier and agency data into ACORD-standard
+        formats, enabling accurate downloads, uploads, and integrations.
+    - source: https://www.ebix.com/pdf/asp_web.pdf
+      quote: EbixASP utilizes a library of ACORD forms that is updated constantly to
+        ensure that all forms are current and compliant with ACORD's standards. In fact,
+        EbixASP utilizes bi-directional data exchange with ACORD applications.
+    - source: https://www.ebix.com/pdf/eforms_web.pdf
+      quote: EbixeForms uses electronic ACORD Forms for entry of data by an Agent/Broker
+        for submission to Carriers and MGAs. XML Data is separated from the electronic
+        form for submission of information.
+    - source: https://www.ebixasp.com/ebixasphelp/maintenance/Real_Time_Interface/Install_Download_Real-Time_Interface.htm
+      quote: When logging onto the EbixASP Real Time Interface the PC synchronizes with
+        IVANS and updates the credentials on the PC, including the list of carriers
+        and service transactions IVANS has set up for the agency's account.
+    ngds: not referenced anywhere on ebix.com or ebixasp.com
+    acordCertification: no ACORD certification claim published on the public site
+    agencyManagementSystems: TEAM-UP states it "supports all leading agency management
+      systems and continues to add regional systems on a regular basis"; no per-vendor
+      list (Applied Epic, Vertafore AMS360) is published on the current site.
+  insuranceVerbs:
+    quote:
+      exposed: marketed-only
+      audience: partner/client
+      note: '"EbixASP supports agency management and API-driven quote-bind workflows";
+        connector platform lists "quoting". No public reference or endpoint.'
+    bind:
+      exposed: marketed-only
+      audience: partner/client
+      note: Named as part of "quote-bind workflows" and quote-to-bind orchestration
+        for MGAs and brokers. No public reference.
+    issue:
+      exposed: marketed-only
+      audience: partner/client
+      note: Policy administration and "policy servicing" named in the Oct 2025 connector
+        release; issuance is delivered inside EbixEvolution/EbixExchange under contract.
+    fnol:
+      exposed: false
+      audience: n/a
+      note: No FNOL API is published. Claims appear only as ACORD AL3 Claims Download
+        into agency management systems via TEAM-UP — a batch file transport, not an
+        FNOL API.
+    other:
+    - eApp (life/annuity electronic application) — connector platform, client-gated
+    - Enrollment (benefits) — connector platform, client-gated
+    - Underwriting checks — connector platform, client-gated
+    - Payments — connector platform, client-gated
+  authModel:
+    documented: false
+    observed: Authorization header required (HTTP 401 "Missing Authorization header"
+      on api.ebixcash.com/openapi.json); scheme not published.
+    wellKnown:
+    - url: https://api.ebixcash.com/.well-known/openid-configuration
+      status: 404
+    - url: https://api.ebixcash.com/.well-known/oauth-authorization-server
+      status: 404
+    - url: https://api.ebix.com/.well-known/openid-configuration
+      status: 404
+    - url: https://api.ebix.com/.well-known/oauth-authorization-server
+      status: 404
+    - url: https://www.ebix.com/.well-known/openid-configuration
+      status: 200
+      note: NOT a real discovery document — the marketing SPA returns its homepage shell
+        with HTTP 200 for every path.
+    - url: https://www.ebix.com/.well-known/oauth-authorization-server
+      status: 200
+      note: NOT a real discovery document — same SPA soft-404 behaviour.
+    note: No OAuth2, OIDC discovery, API-key documentation or mTLS guidance is published
+      anywhere public. Product access for agencies is username/password to the EbixASP
+      web application; carrier download credentials are provisioned through IVANS.
+  webhooks:
+    published: false
+    asyncapi: false
+    note: No event catalog, webhook reference or AsyncAPI document found. Event delivery
+      in this stack is the ACORD AL3 download mailbox/archive pattern, not HTTP callbacks.
+  postman:
+    officialWorkspace: false
+    note: Postman public search for "ebix" returns only third-party workspaces (e.g.
+      "Ebix/AU Bank" published by an unaffiliated handle). No Ebix-owned public workspace
+      or collection was found.
+  graphql:
+    published: false
+    note: No /graphql surface found on ebix.com, api.ebix.com or api.ebixcash.com.
+  grpc:
+    published: false
+    note: No .proto files published.
+  corporate:
+    note: |
+      Ebix Inc. filed for Chapter 11 on 17 December 2023 in the Northern District
+      of Texas, sold its North American life and annuity assets to Zinnia (an
+      Eldridge business) for approximately US$400M, and exited Chapter 11 on
+      30 August 2024, consolidating with Eraaya Lifespaces. The public site was
+      rebuilt after emergence; its sitemap.xml lists only 38 URLs and contains no
+      developer, API or documentation section.
+  transports:
+  - protocol: REST
+    scheme: https
+    baseURL: https://api.ebixcash.com
+    documented: false
+    note: Live EbixCash API Hub root returns a welcome JSON payload; all routes and
+      the OpenAPI document require an Authorization header.
+  - protocol: REST
+    scheme: https
+    baseURL: https://api.ebix.com
+    documented: false
+    note: Host resolves and returns a JSON 404 envelope; no public routes documented.
+  - protocol: ACORD AL3 file download
+    scheme: batch
+    documented: partially
+    note: TEAM-UP policy, claims and direct-bill commission download in ACORD-standard
+      AL3, retrieved from a real-time archive; the transport is described in marketing
+      and product help, not in a technical specification.
+  - protocol: ACORD XML
+    scheme: https
+    documented: partially
+    note: Translation Services converts carrier-proprietary formats to ACORD XML/AL3
+      using Java, XML and XSLT for upload bridging and download processing.
+  - protocol: IVANS real-time interface
+    scheme: https
+    documented: partially
+    note: EbixASP Real-Time Interface synchronizes carrier credentials and service transactions
+      with IVANS; documented in the EbixASP product help, not as an API.
+  - protocol: WebSocket
+    scheme: wss
+    documented: false
+    note: None found.
+sources:
+- url: https://www.ebix.com/
+  type: Website
+  status: 200
+  note: Marketing SPA; title "Insurance Software Solution | Insurance Software Development
+    - Ebix".
+- url: https://ebix.com/sitemap.xml
+  type: Sitemap
+  status: 200
+  note: 38 URLs total, generated by Screaming Frog; contains no developer, API or documentation
+    path.
+- url: https://www.ebix.com/who-we-are
+  type: About
+  status: 200
+- url: https://www.ebix.com/solutions/property-and-casualty-insurance
+  type: Documentation
+  status: 200
+  note: Names EbixEvolution, EbixASP, PlacingHub, Sunrise Exchange, iClose, TEAM-UP,
+    Translation Services; source of the "API-driven quote-bind workflows" and "ACORD-standard
+    formats" language.
+- url: https://www.ebix.com/solutions/property-and-casualty-insurance/team-up
+  type: Documentation
+  status: 200
+  note: Primary ACORD AL3 evidence.
+- url: https://www.ebix.com/solutions/property-and-casualty-insurance/translation-services
+  type: Documentation
+  status: 200
+  note: Primary ACORD AL3/XML translation evidence.
+- url: https://www.ebix.com/solutions/life-insurance
+  type: Documentation
+  status: 200
+  note: Describes an "API-first platform" for carriers and brokers; no reference docs.
+- url: https://www.ebix.com/solutions/health-insurance-and-employee-benefits
+  type: Documentation
+  status: 200
+- url: https://www.ebix.com/pdf/asp_web.pdf
+  type: ProductBrochure
+  status: 200
+  note: EbixASP brochure — ACORD forms library and bi-directional ACORD data exchange.
+- url: https://www.ebix.com/pdf/eforms_web.pdf
+  type: ProductBrochure
+  status: 200
+  note: EbixeForms brochure — electronic ACORD forms with separated XML data.
+- url: https://www.ebixasp.com/
+  type: Documentation
+  status: 200
+  note: 350+ live carrier/vendor integrations claimed; API access bundled in subscription,
+    contact sales.
+- url: https://www.ebixasp.com/ebixasphelp/maintenance/Real_Time_Interface/Install_Download_Real-Time_Interface.htm
+  type: ProductHelp
+  status: 200
+  note: IVANS synchronization evidence.
+- url: https://www.ebixasp.com/ebixasphelp/maintenance/download/download_carriers.htm
+  type: ProductHelp
+  status: 200
+  note: Carrier download configuration.
+- url: https://api.ebixcash.com/
+  type: APIHost
+  status: 200
+  note: '"Welcome to Ebixcash API Hub!!!" — uvicorn.'
+- url: https://api.ebixcash.com/openapi.json
+  type: OpenAPI
+  status: 401
+  note: Gated spec — "Missing Authorization header". Not harvested.
+- url: https://api.ebix.com/
+  type: APIHost
+  status: 404
+  note: JSON 404 envelope; no public routes.
+- url: https://www.prnewswire.com/news-releases/ebix-launches-plug-and-play-connector-platform-for-insurtech-and-fintech-extending-its-integration-capabilities-directly-into-client-environments-302576698.html
+  type: PressRelease
+  status: 200
+  note: 7 October 2025 — connector platform with 1SilverBullet; quoting, eApp, enrollment,
+    underwriting checks, payments, policy servicing as modular APIs behind "a standardized
+    connector fabric with pre-built mappings and a developer portal"; no portal URL
+    published.
+actions:
+  apisYmlCreated: true
+  apisListed: 0
+  openapiDirectoryCreated: false
+  reason: |
+    apis[] is intentionally empty. Ebix publishes no public, self-serve,
+    documented API and no retrievable machine-readable specification. Listing an
+    API here would require inventing a documentation URL that does not exist.
+    Recording the gate accurately — a live but 401-protected OpenAPI on the
+    EbixCash API Hub, a soft-404 SPA where a developer portal would be, and a
+    deep ACORD AL3/XML + IVANS transport where an API would be — is the correct
+    outcome for a United States insurance infrastructure vendor operating with no
+    federal regulator and no open-insurance mandate.
