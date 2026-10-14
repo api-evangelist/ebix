@@ -2,6 +2,7 @@ generated: '2026-10-14'
 method: searched
 checked:
 - duck-creek/integrations/duck-creek-integration-edges.yml
+- procore/integrations/procore-integration-edges.yml
 source:
 - duck-creek/integrations/duck-creek-integration-edges.yml
 edges:
@@ -22,3 +23,20 @@ edges:
   detected: '2026-10-14'
   detected_by: mirror-platform-listings.py
   category: Solution
+- partner_name: Procore (own)
+  partner: procore
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://marketplace.procore.com/apps/ebix-coi-tracking
+  mirror_of: procore/integrations/procore-integration-edges.yml
+  apps:
+  - EBIX - COI Tracking
+  listing_count: 1
+  detected: '2026-10-14'
+  detected_by: mirror-platform-listings.py
+  category: Legal & Compliance

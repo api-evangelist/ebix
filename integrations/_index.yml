@@ -16,3 +16,16 @@
   relationship: platform-app
   status: not-a-workflow
   arazzo: null
+- slug: ebix-procore-own
+  label: Procore (own)
+  partner: procore
+  partner_name: Procore (own)
+  category: Legal & Compliance
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.procore.com/apps/ebix-coi-tracking
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
